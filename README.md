@@ -24,12 +24,11 @@ Instead of browsing a static resume, you get a conversational experience tailore
 
 ![Python](https://img.shields.io/badge/-Python-000?logo=python)
 ![Streamlit](https://img.shields.io/badge/-Streamlit-000?logo=streamlit)
-![LangChain](https://img.shields.io/badge/-LangChain-000?logo=data:image/svg+xml;base64,)
+![LangChain](https://img.shields.io/badge/-LangChain-000)
 ![Google Generative AI](https://img.shields.io/badge/-Google%20GenAI-000?logo=google)
 ![FAISS](https://img.shields.io/badge/-FAISS-000?logo=meta)
 ![PyPDF2](https://img.shields.io/badge/-PyPDF2-000?logo=adobe-acrobat-reader)
-
-> IDE: ![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-000?logo=visual-studio-code)
+![Visual Studio Code](https://img.shields.io/badge/-Visual%20Studio%20Code-000?logo=visual-studio-code)
 
 ---
 
