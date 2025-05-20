@@ -1,5 +1,7 @@
 # 💼 Rajat Chauhan — Interactive Portfolio Assistant
 
+---
+
 ## ✨ About the Project
 
 This is an AI-powered, interactive resume and portfolio assistant built using **Streamlit**, **LangChain**, **Google Generative AI**, and **FAISS vector search**.
