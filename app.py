@@ -52,17 +52,24 @@ def load_vector_store():
 
 def get_conversational_chain():
     prompt_template = """
-You are a helpful and witty assistant who speaks on behalf of a software developer named Rajat Chauhan.
-Your job is to promote his skills, experience, and projects with confidence, charm, and solid context.
-Use the given context to answer every question persuasively — whether it's about his skills, job fit, background, or accomplishments.
+You are an articulate and engaging AI assistant, speaking on behalf of software developer **Rajat Chauhan**.
+Your role is to confidently showcase his technical strengths, experience, and accomplishments in the best possible light.
 
-When asked questions like "Is Rajat a good fit for .NET?", use the context to explain how his past experience aligns well with requirement — even if not directly stated.
+When answering questions, respond with clarity, enthusiasm, and persuasive detail — always aligning Rajat’s background with the intent of the query. 
+Whether the topic is about his fit for a .NET role or his project impact, draw compelling connections using the context provided.
 
-If the answer is not present in the context, reply gracefully with:
-"😅 I'd love to brag more, but this detail isn't in the portfolio!"
+If specific information isn't available, respond gracefully with:
+😅 "That detail isn’t documented — but his impact is."
 
-Context:\n{context}\n
-Question:\n{question}\n
+— Tone: Confident, intelligent, and professional  
+— Purpose: Promote Rajat Chauhan’s capabilities effectively  
+— Style: Witty but grounded in facts; persuasive but never exaggerated  
+
+Context:
+{context}
+
+Question:
+{question}
 
 Answer:
 """
@@ -70,22 +77,27 @@ Answer:
     prompt = PromptTemplate(template=prompt_template, input_variables=["context", "question"])
     return load_qa_chain(model, chain_type="stuff", prompt=prompt)
 
+import re
+
 def get_emotion_emoji(answer_text):
-    mapping = {
-        ".Net": "🚀💪",
-        "ASP.NET WEB API": "🛠️📦",
-        "azure": "🐍💻",
-        "ai|cnn|machine learning|ml": "🤖🧠",
-        "achievement|project": "🏆🔥",
-        "education|bachelor|school|college|institute": "🎓📚",
-        "experience|worked at|company|job": "💼🛠️",
-        "skills|technologies|tools": "🧰⚙️",
-        "cloud|azure|server": "☁️🖥️",
-        "not in the context": "😅🤷‍♂️",
+    keyword_emoji_map = {
+        "asp.net core|.net|c#": "🚀💪",
+        "asp.net web api": "🛠️📦",
+        "azure|cloud": "☁️🖥️",
+        "machine learning|ml|cnn|ai": "🤖🧠",
+        "achievement|accomplishment|project": "🏆🔥",
+        "education|college|university|institute": "🎓📚",
+        "experience|worked at|company|role|job": "💼🛠️",
+        "skills|technologies|tools|stack": "🧰⚙️",
+        "not in the context|not listed|missing": "😅🤷‍♂️",
     }
-    for keyword, emoji in mapping.items():
-        if re.search(keyword, answer_text, re.IGNORECASE):
+
+    normalized_text = answer_text.lower()
+
+    for keywords, emoji in keyword_emoji_map.items():
+        if re.search(keywords, normalized_text):
             return emoji
+
     return "💬"
 
 def answer_query(question):
@@ -116,20 +128,26 @@ def main():
     st.title("💼 Ask My Resume/Portfolio")
 
     st.markdown("""
-### 👋 Welcome!
+### 👋 Welcome to Rajat Chauhan's Interactive Portfolio
 
-I'm **Rajat Chauhan** — Enthusiastic software developer with over 3 years of experience in fintech and web services.
-Expertise in creating robust payment solutions and streamlining transaction processes. Focused
-on delivering high-performance, secure systems that drive innovation.
+I'm **Rajat Chauhan** — a cloud-focused, AI-curious, and performance-driven software developer with over 3 years of experience delivering clean, 
+scalable solutions in the fintech and web services space. I thrive on solving real-world problems with elegant code and modern architecture.
 
-💡 Ask me anything — about my experience, tech stack, or whether I’m a great fit for your team.  
-This chatbot knows my portfolio better than I know my fridge inventory. 😄
+I specialize in:
+- 🚀 Designing and deploying secure, high-performance payment solutions  
+- ☁️ Leveraging technologies like **.NET**, **Azure**, and **cloud-native architectures**  
+- 🤖 Exploring intelligent systems with **AI and machine learning foundations**
 
-✨ _Try questions like:_
-- *Is Rajat a good fit for .NET or Azure Cloud?*
-- *What are his skills in .NET, AI or Cloud Computing?*
-- *Which project did he worked on?*
+Whether you're evaluating my technical skills, project history, or role fit — this assistant can answer it all using my portfolio data.
+
+### 💬 Sample Questions to Try:
+- *Is Rajat a strong fit for roles involving .NET and Azure Cloud?*
+- *What technologies and tools does he specialize in?*
+- *Which major projects has he delivered successfully?*
+
+Go ahead — ask anything you'd expect from a top-tier software engineer.
 """)
+
 
     # One-time PDF processing
     if not os.path.exists(f"{VECTOR_STORE_DIR}/index.faiss"):
